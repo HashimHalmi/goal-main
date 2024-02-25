@@ -1,0 +1,364 @@
+basePath: /api
+definitions:
+  booking.GrouppedUserBooking:
+    properties:
+      bookings:
+        items:
+          $ref: '#/definitions/booking.UserBookingItem'
+        type: array
+      userDisplayName:
+        type: string
+    type: object
+  booking.UserBookingItem:
+    properties:
+      bookingDate:
+        type: string
+      bookingId:
+        type: integer
+      bookingPeriodId:
+        type: integer
+      userDisplayName:
+        type: string
+    type: object
+  entity.Booking:
+    properties:
+      bookingPeriodId:
+        type: integer
+      createdDate:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      uid:
+        type: string
+      updatedDate:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      userId:
+        type: integer
+    type: object
+  entity.Role:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  entity.User:
+    properties:
+      createdDate:
+        type: string
+      email:
+        type: string
+      employeeNumber:
+        type: string
+      firstName:
+        type: string
+      hashPassword:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      lastName:
+        type: string
+      role:
+        $ref: '#/definitions/entity.Role'
+      roleId:
+        type: integer
+      uid:
+        type: string
+      updatedDate:
+        type: string
+      username:
+        type: string
+    type: object
+  hrm.AssessmentAssignmentModel:
+    properties:
+      assessmentId:
+        type: integer
+      assessmentName:
+        type: string
+      description:
+        type: string
+      version:
+        type: integer
+      version_id:
+        type: integer
+    type: object
+  hse.AssessmentModel:
+    properties:
+      createdBy:
+        type: integer
+      createdDate:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      uid:
+        type: string
+      updatedBy:
+        type: integer
+      updatedDate:
+        type: string
+    type: object
+  hse.AssessmentVersionModel:
+    properties:
+      id:
+        type: integer
+      questionCount:
+        type: integer
+      version:
+        type: integer
+    type: object
+  hse.AssignmentModel:
+    properties:
+      userId:
+        type: integer
+      versionId:
+        type: integer
+    type: object
+info:
+  contact:
+    email: truchjkl@gmail.com
+    name: Support
+  description: This is a simple office management REST API.
+  license:
+    name: MIT License
+    url: http://github.com/truc9/goal/LICENSE
+  title: GOAL Swagger API
+  version: "1.0"
+paths:
+  /api/asessments:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Booking'
+            type: array
+      summary: Get all assessments
+      tags:
+      - Assessments
+  /api/asessments/:assessmentId:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+      summary: Delete Assessment
+      tags:
+      - Assessments
+  /api/asessments/:assessmentId/versions:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/hse.AssessmentVersionModel'
+            type: array
+      summary: Get versions
+      tags:
+      - Assessments
+  /api/asessments/pair-items:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+      summary: GetAssessmentPairItems
+      tags:
+      - Assessments
+  /api/assessments:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Assessment
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/hse.AssessmentModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Create Assessment
+      tags:
+      - Assessments
+  /api/assessments/:assessmentId:
+    put:
+      produces:
+      - application/json
+      responses: {}
+      summary: Update Assessment
+      tags:
+      - Assessments
+  /api/assignments:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: GetAssignments
+      tags:
+      - Assessments
+  /api/assignments/:versionId/assign:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: AssignmentModel
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/hse.AssignmentModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Assign
+      tags:
+      - Assessments
+  /api/assignments/:versionId/unassign:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Assign
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/hse.AssignmentModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Unassign
+      tags:
+      - Assessments
+  /api/bookings:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/booking.GrouppedUserBooking'
+            type: array
+      summary: Get all bookings
+      tags:
+      - Bookings
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Submit Booking
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Booking'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Booking'
+      summary: Submit booking
+      tags:
+      - Bookings
+  /api/bookings/{bookingId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Booking ID
+        in: path
+        name: bookingId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Delete booking
+      tags:
+      - Bookings
+  /api/bookings/{bookingPeriodId}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Booking Period ID
+        in: path
+        name: bookingPeriodId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Booking'
+            type: array
+      summary: Get all bookings by Period ID
+      tags:
+      - Bookings
+  /api/employees/my-assignments:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/hrm.AssessmentAssignmentModel'
+            type: array
+      summary: Get my assignments
+      tags:
+      - Employees
+swagger: "2.0"
